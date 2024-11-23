@@ -1,50 +1,33 @@
-import numpy as np
+from my_hadamard_numpy import generate_hadamard
 
-def generate_hadamard(n):
-    # Рекурсивное построение матрицы Адамара
-    if n == 1:
-        return np.matrix([[False]], dtype=int)
+def is_haar_row(row):
+    middle = len(row) // 2
+    half_1 = row[:middle]
+    half_2 = row[middle:]
 
-    quarter_matrix = generate_hadamard(n // 2)
-    upper = np.bmat([[quarter_matrix, quarter_matrix]])
-    lower = np.bmat([[quarter_matrix, ~quarter_matrix]])
-    return np.bmat([[upper], [lower]])
+    for i in range(middle):
+        if (half_1[i] == False and half_2[i] != True) or (half_1[i] == True and half_2 != False):
+            return False
+    
+    return True
 
-def haar_wavelet_structure_binary(n):
-    """Создает список строк, соответствующих бинарным базисам вейвлетов Хаара."""
-    haar_basis = []
-    for i in range(n // 2):
-        base = np.zeros(n, dtype=int)
-        base[i] = 1  # Первая часть "включена"
-        base[i + n // 2] = 1  # Вторая часть "включена"
-        haar_basis.append(base)
-    return haar_basis
+def count_haar_rows(rows):
+    counter = 0
+    matches = []
+    for row in rows:
+        if is_haar_row(row):
+            matches.append(row)
+            counter += 1
+    
+    return matches, counter
 
-def find_haar_wavelets(hadamard_matrix):
-    """Ищет строки матрицы Адамара, соответствующие бинарным базисам вейвлетов Хаара."""
-    n = hadamard_matrix.shape[1]
-    haar_basis = haar_wavelet_structure_binary(n)
-    matching_rows = []
+n = (int((input('Введите степень двойки для размера матрицы >> ')))) ** 2
 
-    for i, row in enumerate(hadamard_matrix):
-        for haar_row in haar_basis:
-            if np.array_equal(row, haar_row):
-                matching_rows.append((i, row))
-    return matching_rows
+hadamard = generate_hadamard(n)
+matches, count = count_haar_rows(hadamard)
 
-# Ввод размера матрицы
-n = 2 ** int(input('Введите степень двойки для размера матрицы >> '))
+print(f'Количество совпадений: {count}\n')
 
-# Генерация и конвертация матрицы Адамара в целые числа
-hadamard_matrix = generate_hadamard(n).astype(int)
-
-# Нахождение вейвлетов Хаара
-matching_rows = find_haar_wavelets(hadamard_matrix)
-
-# Вывод строк, соответствующих бинарным вейвлетам Хаара
-if matching_rows:
-    print("Найдены строки, соответствующие бинарным вейвлетам Хаара:")
-    for index, row in matching_rows:
-        print(f"Строка {index}: {row.tolist()}")
-else:
-    print("Бинарные вейвлеты Хаара не найдены в матрице.")
+print('Совпадения:')
+for i in matches:
+    print(i.astype(int))

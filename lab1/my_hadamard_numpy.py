@@ -13,9 +13,10 @@ def generate_hadamard(n):
     
     return np.bmat([[upper], [lower]])
     
-    
-n = (int((input('Введите степень двойки для размера матрицы >> ')))) ** 2
+def main():    
+    n = (int((input('Введите степень двойки для размера матрицы >> ')))) ** 2
+    result = generate_hadamard(n)
+    print(generate_hadamard(n).astype(int))
 
-result = generate_hadamard(n)
-
-print(generate_hadamard(n).astype(int))
+if __name__ == '__main__':
+    main()
