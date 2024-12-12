@@ -1,9 +1,14 @@
-import pytest, numpy as np, scipy_hadamard
+import numpy as np
+import scipy.linalg as sp
+import pytest
+
 from my_hadamard_numpy import generate_hadamard
+from scipy_hadamard import sci_hadamard
 
-@pytest.mark.parametrize("n", [2, 4, 8, 16])
+@pytest.mark.parametrize('n', [2, 4, 8, 16, 32])
 def test_hadamard(n):
-    m1 = generate_hadamard(n).astype(int)
-    m2 = scipy_hadamard(n)
+    matrix1 = generate_hadamard(n).astype(int)
+    matrix2 = sci_hadamard(n)
 
-    assert np.array_equal(m1, m2), f'Матрицы не совпадают для n={n}'
+    assert np.array_equal(matrix1, matrix2)
+    f'Не совпадают при n = {n}'
