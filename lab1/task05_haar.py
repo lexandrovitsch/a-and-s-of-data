@@ -6,7 +6,7 @@ def is_haar_row(row):
     half_2 = row[middle:]
 
     for i in range(middle):
-        if (half_1[i] == False and half_2[i] != True) or (half_1[i] == True and half_2 != False):
+        if (half_1[i] == False and half_2[i] != True) or (half_1[i] == True and half_2.all() != False):
             return False
     
     return True
