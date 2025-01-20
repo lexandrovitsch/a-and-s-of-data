@@ -63,7 +63,7 @@ def update_attendance(student, discipline, date, new_status):
     else:
         print(f"Данные для дисциплины '{discipline}' и даты '{date}' не найдены.")
 
-# Пример использования
+
 if __name__ == "__main__":
     # Путь к файлу
     file_path = "students.xlsx"
